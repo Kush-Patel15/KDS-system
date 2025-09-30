@@ -1,67 +1,71 @@
 import { IconZap, IconClock, IconSun, IconMoon } from "./Icons";
-import LoginSignup from "./LoginSignup";
-const Header = ({ currentTime, theme, toggleTheme, view, setView, kitchenLoad, formatTime }) => {
+
+const Header = ({
+  currentTime,
+  theme,
+  toggleTheme,
+  view,
+  setView,
+  kitchenLoad,
+  formatTime
+}) => {
   const stations = ["All", "Grill", "Fryer", "Assembly"];
+
   const loadColor =
     kitchenLoad === "Heavy"
       ? "text-red-500"
       : kitchenLoad === "Moderate"
-      ? "text-yellow-500"
-      : "text-green-500";
+      ? "text-yellow-400"
+      : "text-green-400";
 
   return (
-    <header className="p-4 flex justify-between items-center dark:bg-gray-900/50 bg-white/50 backdrop-blur-sm rounded-lg shadow-md mb-4">
-      {/* Left Section */}
+    <header className="p-6 rounded-lg bg-[#0f1729] border border-gray-700/40 shadow-md flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+      {/* Left */}
       <div>
-        <h1 className="text-3xl font-black tracking-tighter dark:text-white text-black">
+        <h1 className="text-3xl font-extrabold tracking-tight text-white">
           Kitchen Display System
         </h1>
-        <div className={`flex items-center gap-2 font-bold ${loadColor}`}>
+        <div className={`mt-2 flex items-center gap-2 font-semibold text-sm uppercase ${loadColor}`}>
           <IconZap />
           <span>{kitchenLoad} Load</span>
         </div>
       </div>
 
-      {/* Middle Section */}
-      <div className="flex items-center gap-6">
-        {/* Current Time */}
-        <div className="flex items-center gap-2 font-semibold dark:text-gray-200 text-gray-800">
+      {/* Right cluster */}
+      <div className="flex flex-wrap md:flex-nowrap items-center gap-4">
+        <div className="flex items-center gap-2 font-semibold text-gray-200 text-sm">
           <IconClock />
-          <span>{formatTime(currentTime)}</span>
+          <span className="tabular-nums">{formatTime(currentTime)}</span>
         </div>
-
-        {/* Station Filter */}
         <div className="flex gap-2">
-          {stations.map((station) => (
-            <button
-              key={station}
-              onClick={() => setView(station)}
-              className={`px-3 py-1 rounded-lg font-medium transition-colors ${
-                view === station
-                  ? "bg-yellow-400 text-black"
-                  : "dark:bg-gray-700 bg-gray-200 dark:text-gray-300 text-gray-800 hover:bg-yellow-300 hover:text-black"
-              }`}
-            >
-              {station}
-            </button>
-          ))}
+          {stations.map(s => {
+            const active = view === s;
+            return (
+              <button
+                key={s}
+                onClick={() => setView(s)}
+                className={[
+                  "px-3 py-1.5 rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400",
+                  active
+                    ? "bg-yellow-400 text-black"
+                    : "bg-gray-700/60 text-gray-200 hover:bg-gray-600"
+                ].join(" ")}
+              >
+                {s}
+              </button>
+            );
+          })}
         </div>
-
-        {/* Theme Toggle */}
         <button
           onClick={toggleTheme}
-          className="p-2 rounded-full dark:bg-gray-700 bg-gray-200 dark:hover:bg-gray-600 hover:bg-gray-300 transition-colors"
+            aria-label="Toggle Theme"
+            className="p-2 rounded-md bg-gray-700/60 text-gray-200 hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400"
         >
           {theme === "light" ? <IconMoon /> : <IconSun />}
         </button>
-
-        <button className="p-2 text-white rounded-xl dark:bg-gray-700 bg-gray-200 dark:hover:bg-gray-600 hover:bg-gray-300 transition-colors" onClick={<LoginSignup/>}>Login/Signup</button>
       </div>
     </header>
   );
 };
 
 export default Header;
-
-
-

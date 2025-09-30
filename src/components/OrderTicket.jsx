@@ -14,10 +14,12 @@ const OrderTicket = ({
     order.specialInstruction &&
     order.specialInstruction.toLowerCase().includes("allergy");
 
+  // Before choosing color:
+  const normalized = order.status.toLowerCase().replace("_","-");
   const statusBorderColor = {
     "new": "border-blue-500",
     "in-progress": "border-yellow-500",
-    "ready": "border-green-500",
+    "ready": "border-green-500"
   };
 
   const stationIcons = {
